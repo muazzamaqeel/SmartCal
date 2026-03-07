@@ -90,8 +90,6 @@ export default function AuthIntro() {
           </ThemedText>
 
           <Animated.View style={{ transform: [{ translateY: float }] }}>
-          import neural from "@/assets/images/neural-network.png";
-
           <Image
             source={neural}
             style={styles.neural}
