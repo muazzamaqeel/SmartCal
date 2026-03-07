@@ -11,7 +11,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ThemedText } from "@/components/themed-text";
 import { useEffect, useRef } from "react";
-import { Image } from "expo-image";
+import { Image } from "react-native";
+
+import neural from "../../assets/images/neural-network.png";
 
 const { width } = Dimensions.get("window");
 
@@ -44,7 +46,7 @@ export default function AuthIntro() {
       Animated.sequence([
         Animated.timing(float, {
           toValue: -8,
-          duration: 2500,
+          duration: 3500,
           useNativeDriver: true,
         }),
         Animated.timing(float, {
@@ -88,11 +90,13 @@ export default function AuthIntro() {
           </ThemedText>
 
           <Animated.View style={{ transform: [{ translateY: float }] }}>
-            <Image
-              source={require("@/assets/images/neural-network.png")}
-              style={styles.neural}
-              contentFit="contain"
-            />
+          import neural from "@/assets/images/neural-network.png";
+
+          <Image
+            source={neural}
+            style={styles.neural}
+            resizeMode="contain"
+          />
           </Animated.View>
 
         </View>

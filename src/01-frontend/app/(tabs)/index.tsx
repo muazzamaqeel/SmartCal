@@ -1,4 +1,4 @@
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { StyleSheet, View, Pressable } from "react-native";
 import { Link, type Href } from "expo-router";
 
