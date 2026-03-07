@@ -54,7 +54,7 @@ export default function SignIn() {
 
               <View style={styles.signupBlock}>
 
-                <ThemedText style={styles.signupTitle}>SignUp</ThemedText>
+                <ThemedText style={styles.signupTitle}>Sign Up</ThemedText>
 
                 <ThemedText style={styles.signupText}>
                   Create an account and start managing your life with AI
@@ -68,7 +68,7 @@ export default function SignIn() {
                   pressed && { opacity: 0.8 }
                 ]}
               >
-                   
+
              <ThemedText style={styles.signupButtonText}>
                 Create Account
               </ThemedText>
@@ -89,7 +89,7 @@ export default function SignIn() {
             </ThemedText>
 
             <ThemedText style={styles.signinSubtitle}>
-              Sign in to continue
+              Sign In to continue
             </ThemedText>
 
           </View>
