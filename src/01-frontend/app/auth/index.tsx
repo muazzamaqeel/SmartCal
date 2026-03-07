@@ -5,18 +5,15 @@ import {
   Animated,
   Easing,
   Dimensions,
+  Text,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ThemedText } from "@/components/themed-text";
 import { useEffect, useRef } from "react";
-import { Image } from "react-native";
-
-import neural from "../../assets/images/neural-network.png";
 
 const { width } = Dimensions.get("window");
-
 const CARD_WIDTH = Math.min(width * 0.85, 1050);
 
 export default function AuthIntro() {
@@ -46,12 +43,14 @@ export default function AuthIntro() {
       Animated.sequence([
         Animated.timing(float, {
           toValue: -8,
-          duration: 3500,
+          duration: 2800,
+          easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
         Animated.timing(float, {
           toValue: 0,
-          duration: 2500,
+          duration: 2800,
+          easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         })
       ])
@@ -62,7 +61,8 @@ export default function AuthIntro() {
   return (
 
     <LinearGradient
-      colors={["#020617", "#0f172a", "#020617"]}
+      colors={["#020617", "#020617", "#020617", "#0f172a"]}
+      locations={[0, 0.3, 0.6, 1]}
       style={styles.screen}
     >
 
@@ -78,7 +78,9 @@ export default function AuthIntro() {
       >
 
         {/* LEFT PANEL */}
-
+        
+        <View style={styles.aiGlow}/>
+        
         <View style={styles.leftPanel}>
 
           <ThemedText style={styles.title}>
@@ -89,12 +91,22 @@ export default function AuthIntro() {
             Productivity at its max...
           </ThemedText>
 
-          <Animated.View style={{ transform: [{ translateY: float }] }}>
-          <Image
-            source={neural}
-            style={styles.neural}
-            resizeMode="contain"
-          />
+
+          {/* BIG 3D AI TEXT */}
+
+          <Animated.View
+            style={[
+              styles.aiContainer,
+              { transform: [{ translateY: float }] }            ]}
+          >
+
+            <Text style={[styles.aiText, styles.aiDepth4]}>AI</Text>
+            <Text style={[styles.aiText, styles.aiDepth3]}>AI</Text>
+            <Text style={[styles.aiText, styles.aiDepth2]}>AI</Text>
+            <Text style={[styles.aiText, styles.aiDepth1]}>AI</Text>
+
+            <Text style={styles.aiFront}>AI</Text>
+
           </Animated.View>
 
         </View>
@@ -112,19 +124,16 @@ export default function AuthIntro() {
             Press Continue to Sign In
           </ThemedText>
 
-
           <Pressable
             style={({ pressed }) => [
               styles.primary,
-              pressed && { transform: [{ scale: 0.96 }] }
-            ]}
+              pressed && { transform: [{ scale: 0.97 }], opacity: 0.9 }            ]}
             onPress={() => router.push("/auth/signin")}
           >
             <ThemedText style={styles.primaryText}>
               Continue
             </ThemedText>
           </Pressable>
-
 
           <Pressable
             style={({ pressed }) => [
@@ -158,51 +167,42 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-
-  /* MAIN CARD */
+  aiGlow: {
+  position: "absolute",
+  width: 320,
+  height: 320,
+  backgroundColor: "#3b82f6",
+  borderRadius: 200,
+  opacity: 0.15,
+  },
 
   card: {
-
     height: 540,
-
     flexDirection: "row",
-
     borderRadius: 32,
-
     overflow: "hidden",
 
     shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 40,
-    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.35,
+    shadowRadius: 50,
+    shadowOffset: { width: 0, height: 25 },
 
-    elevation: 20,
+    elevation: 30,
   },
-
-
-  /* LEFT PANEL */
 
   leftPanel: {
-
     flex: 1.4,
-
     backgroundColor: "#020617",
-
     padding: 60,
-
     justifyContent: "center",
     alignItems: "center",
-
-    borderTopLeftRadius: 32,
-    borderBottomLeftRadius: 32,
-
   },
 
-
   title: {
-    fontSize: 52,
-    fontWeight: "800",
+    fontSize: 56,
+    fontWeight: "900",
     color: "white",
+    letterSpacing: 1,
   },
 
   subtitle: {
@@ -214,29 +214,59 @@ const styles = StyleSheet.create({
     maxWidth: 320,
   },
 
-  neural: {
-    width: 340,
-    height: 280,
+  /* AI TEXT */
+
+  aiContainer: {
+    marginTop: -20,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
+  aiText: {
+    position: "absolute",
+    fontSize: 170,
+    fontWeight: "900",
+    letterSpacing: 6,
+  },
 
+  aiDepth1: {
+    color: "#1e293b",
+    transform: [{ translateX: 6 }, { translateY: 6 }],
+  },
+
+  aiDepth2: {
+    color: "#0f172a",
+    transform: [{ translateX: 12 }, { translateY: 12 }],
+  },
+
+  aiDepth3: {
+    color: "#020617",
+    transform: [{ translateX: 18 }, { translateY: 18 }],
+  },
+
+aiDepth4: {
+  color: "#000000",
+  transform: [{ translateX: 28 }, { translateY: 28 }],
+},
+
+  aiFront: {
+    fontSize: 170,
+    fontWeight: "900",
+    letterSpacing: 6,
+    color: "#ffffff",
+
+    textShadowColor: "#38bdf8",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 60,
+  },
   /* RIGHT PANEL */
 
-  rightPanel: {
-
-    flex: 1,
-
-    backgroundColor: "#f1f5f9",
-
-    padding: 70,
-
-    justifyContent: "center",
-
-    borderTopRightRadius: 32,
-    borderBottomRightRadius: 32,
-
-  },
-
+rightPanel: {
+  flex: 1,
+  backgroundColor: "#f8fafc",
+  padding: 70,
+  justifyContent: "center",
+},
 
   welcome: {
     fontSize: 34,
@@ -252,13 +282,19 @@ const styles = StyleSheet.create({
     color: "#64748b",
   },
 
-
   primary: {
     backgroundColor: "#7a1e48",
     padding: 18,
     borderRadius: 30,
     alignItems: "center",
     marginBottom: 18,
+
+    shadowColor: "#7a1e48",
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 10 },
+
+    elevation: 6,
   },
 
   primaryText: {
@@ -266,7 +302,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
-
 
   secondary: {
     borderWidth: 1,
