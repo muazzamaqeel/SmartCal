@@ -112,7 +112,7 @@ export default function SignIn() {
               styles.loginButton,
               pressed && { transform: [{ scale: 0.97 }] }
             ]}
-            onPress={() => router.replace("/(tabs)")}
+            onPress={() => router.replace("/dashboard")}
           >
             <ThemedText style={styles.loginText}>
               Sign In

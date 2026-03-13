@@ -405,16 +405,15 @@ import {
   Animated,
   Easing,
   Dimensions,
+  Text,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ThemedText } from "@/components/themed-text";
 import { useEffect, useRef } from "react";
-import { Image } from 'react-native';
 
 const { width } = Dimensions.get("window");
-
 const CARD_WIDTH = Math.min(width * 0.85, 1050);
 
 export default function AuthIntro() {
@@ -444,12 +443,14 @@ export default function AuthIntro() {
       Animated.sequence([
         Animated.timing(float, {
           toValue: -8,
-          duration: 3500,
+          duration: 2800,
+          easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
         Animated.timing(float, {
           toValue: 0,
-          duration: 2500,
+          duration: 2800,
+          easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         })
       ])
@@ -460,7 +461,8 @@ export default function AuthIntro() {
   return (
 
     <LinearGradient
-      colors={["#020617", "#0f172a", "#020617"]}
+      colors={["#020617", "#020617", "#020617", "#0f172a"]}
+      locations={[0, 0.3, 0.6, 1]}
       style={styles.screen}
     >
 
@@ -476,7 +478,9 @@ export default function AuthIntro() {
       >
 
         {/* LEFT PANEL */}
-
+        
+        <View style={styles.aiGlow}/>
+        
         <View style={styles.leftPanel}>
 
           <ThemedText style={styles.title}>
@@ -487,12 +491,22 @@ export default function AuthIntro() {
             Productivity at its max...
           </ThemedText>
 
-          <Animated.View style={{ transform: [{ translateY: float }] }}>
-            <Image
-              source={require("@/assets/images/neural-network.png")}
-              style={styles.neural}
-              contentFit="contain"
-            />
+
+          {/* BIG 3D AI TEXT */}
+
+          <Animated.View
+            style={[
+              styles.aiContainer,
+              { transform: [{ translateY: float }] }            ]}
+          >
+
+            <Text style={[styles.aiText, styles.aiDepth4]}>AI</Text>
+            <Text style={[styles.aiText, styles.aiDepth3]}>AI</Text>
+            <Text style={[styles.aiText, styles.aiDepth2]}>AI</Text>
+            <Text style={[styles.aiText, styles.aiDepth1]}>AI</Text>
+
+            <Text style={styles.aiFront}>AI</Text>
+
           </Animated.View>
 
         </View>
@@ -510,19 +524,16 @@ export default function AuthIntro() {
             Press Continue to Sign In
           </ThemedText>
 
-
           <Pressable
             style={({ pressed }) => [
               styles.primary,
-              pressed && { transform: [{ scale: 0.96 }] }
-            ]}
+              pressed && { transform: [{ scale: 0.97 }], opacity: 0.9 }            ]}
             onPress={() => router.push("/auth/signin")}
           >
             <ThemedText style={styles.primaryText}>
               Continue
             </ThemedText>
           </Pressable>
-
 
           <Pressable
             style={({ pressed }) => [
@@ -556,51 +567,42 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-
-  /* MAIN CARD */
+  aiGlow: {
+  position: "absolute",
+  width: 320,
+  height: 320,
+  backgroundColor: "#3b82f6",
+  borderRadius: 200,
+  opacity: 0.15,
+  },
 
   card: {
-
     height: 540,
-
     flexDirection: "row",
-
     borderRadius: 32,
-
     overflow: "hidden",
 
     shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 40,
-    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.35,
+    shadowRadius: 50,
+    shadowOffset: { width: 0, height: 25 },
 
-    elevation: 20,
+    elevation: 30,
   },
-
-
-  /* LEFT PANEL */
 
   leftPanel: {
-
     flex: 1.4,
-
     backgroundColor: "#020617",
-
     padding: 60,
-
     justifyContent: "center",
     alignItems: "center",
-
-    borderTopLeftRadius: 32,
-    borderBottomLeftRadius: 32,
-
   },
 
-
   title: {
-    fontSize: 52,
-    fontWeight: "800",
+    fontSize: 56,
+    fontWeight: "900",
     color: "white",
+    letterSpacing: 1,
   },
 
   subtitle: {
@@ -612,29 +614,59 @@ const styles = StyleSheet.create({
     maxWidth: 320,
   },
 
-  neural: {
-    width: 340,
-    height: 280,
+  /* AI TEXT */
+
+  aiContainer: {
+    marginTop: -20,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
+  aiText: {
+    position: "absolute",
+    fontSize: 170,
+    fontWeight: "900",
+    letterSpacing: 6,
+  },
 
+  aiDepth1: {
+    color: "#1e293b",
+    transform: [{ translateX: 6 }, { translateY: 6 }],
+  },
+
+  aiDepth2: {
+    color: "#0f172a",
+    transform: [{ translateX: 12 }, { translateY: 12 }],
+  },
+
+  aiDepth3: {
+    color: "#020617",
+    transform: [{ translateX: 18 }, { translateY: 18 }],
+  },
+
+aiDepth4: {
+  color: "#000000",
+  transform: [{ translateX: 28 }, { translateY: 28 }],
+},
+
+  aiFront: {
+    fontSize: 170,
+    fontWeight: "900",
+    letterSpacing: 6,
+    color: "#ffffff",
+
+    textShadowColor: "#38bdf8",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 60,
+  },
   /* RIGHT PANEL */
 
-  rightPanel: {
-
-    flex: 1,
-
-    backgroundColor: "#f1f5f9",
-
-    padding: 70,
-
-    justifyContent: "center",
-
-    borderTopRightRadius: 32,
-    borderBottomRightRadius: 32,
-
-  },
-
+rightPanel: {
+  flex: 1,
+  backgroundColor: "#f8fafc",
+  padding: 70,
+  justifyContent: "center",
+},
 
   welcome: {
     fontSize: 34,
@@ -650,13 +682,19 @@ const styles = StyleSheet.create({
     color: "#64748b",
   },
 
-
   primary: {
     backgroundColor: "#7a1e48",
     padding: 18,
     borderRadius: 30,
     alignItems: "center",
     marginBottom: 18,
+
+    shadowColor: "#7a1e48",
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 10 },
+
+    elevation: 6,
   },
 
   primaryText: {
@@ -664,7 +702,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
-
 
   secondary: {
     borderWidth: 1,
@@ -799,7 +836,7 @@ export default function SignIn() {
               styles.loginButton,
               pressed && { transform: [{ scale: 0.97 }] }
             ]}
-            onPress={() => router.replace("/(tabs)")}
+            onPress={() => router.replace("/dashboard")}
           >
             <ThemedText style={styles.loginText}>
               Sign In
@@ -960,6 +997,221 @@ const styles = StyleSheet.create({
   signupBlock: {
   alignItems: "center",
   gap: 20,
+  },
+
+});
+
+
+================================================================================
+FILE: C:\Programming\SmartCal\src\01-frontend\app\dashboard\analytics.tsx
+================================================================================
+
+import { View, Text } from "react-native";
+
+export default function AnalyticsPage() {
+  return (
+    <View>
+      <Text>Analytics Page</Text>
+    </View>
+  );
+}
+
+
+================================================================================
+FILE: C:\Programming\SmartCal\src\01-frontend\app\dashboard\index.tsx
+================================================================================
+
+import { View, StyleSheet } from "react-native";
+import { ThemedText } from "@/components/themed-text";
+
+export default function Dashboard() {
+  return (
+
+    <View style={styles.container}>
+
+      <ThemedText type="title">
+        AI Dashboard
+      </ThemedText>
+
+      <ThemedText style={styles.subtitle}>
+        The AI workspace that works for you
+      </ThemedText>
+
+      <View style={styles.cards}>
+
+        <View style={styles.card}>
+          <ThemedText>Engineering Hub</ThemedText>
+        </View>
+
+        <View style={styles.card}>
+          <ThemedText>Analyzing Sales Trends</ThemedText>
+        </View>
+
+        <View style={styles.card}>
+          <ThemedText>Developer Getting Started</ThemedText>
+        </View>
+
+        <View style={styles.card}>
+          <ThemedText>Product Roadmap</ThemedText>
+        </View>
+
+      </View>
+
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 20,
+  },
+
+  subtitle: {
+    opacity: 0.7,
+  },
+
+  cards: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 20,
+    marginTop: 20,
+  },
+
+  card: {
+    width: 220,
+    height: 120,
+    borderRadius: 14,
+    backgroundColor: "#1e293b",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+
+================================================================================
+FILE: C:\Programming\SmartCal\src\01-frontend\app\dashboard\models.tsx
+================================================================================
+
+import { View, Text } from "react-native";
+
+export default function ModelsPage() {
+  return (
+    <View>
+      <Text>Models Page</Text>
+    </View>
+  );
+}
+
+
+================================================================================
+FILE: C:\Programming\SmartCal\src\01-frontend\app\dashboard\_layout.tsx
+================================================================================
+
+import { View, StyleSheet } from "react-native";
+import { Slot } from "expo-router";
+import Sidebar from "./components/Sidebar";
+
+export default function DashboardLayout() {
+  return (
+    <View style={styles.container}>
+
+      {/* LEFT SIDEBAR */}
+      <Sidebar />
+
+      {/* MAIN CONTENT */}
+      <View style={styles.content}>
+        <Slot />
+      </View>
+
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "#0f172a",
+  },
+
+  content: {
+    flex: 1,
+    padding: 30,
+  },
+});
+
+
+================================================================================
+FILE: C:\Programming\SmartCal\src\01-frontend\app\dashboard\components\Sidebar.tsx
+================================================================================
+
+import { View, StyleSheet, Pressable } from "react-native";
+import { useState } from "react";
+import { Link } from "expo-router";
+import { ThemedText } from "@/components/themed-text";
+
+export default function Sidebar() {
+
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <View style={[styles.sidebar, collapsed && styles.collapsed]}>
+
+      <Pressable
+        style={styles.toggle}
+        onPress={() => setCollapsed(!collapsed)}
+      >
+        <ThemedText>{collapsed ? ">" : "<"}</ThemedText>
+      </Pressable>
+
+      {!collapsed && (
+        <View style={styles.menu}>
+
+          <Link href="/dashboard">
+            <ThemedText>Home</ThemedText>
+          </Link>
+
+          <Link href="/devices">
+            <ThemedText>Devices</ThemedText>
+          </Link>
+
+          <Link href="/dashboard/models">
+            <ThemedText>Models</ThemedText>
+          </Link>
+
+          <Link href="/dashboard/analytics">
+            <ThemedText>Analytics</ThemedText>
+          </Link>
+
+        </View>
+      )}
+
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+
+  sidebar: {
+    width: 240,
+    backgroundColor: "#020617",
+    paddingTop: 40,
+    borderRightWidth: 1,
+    borderRightColor: "#1e293b",
+  },
+
+  collapsed: {
+    width: 60,
+  },
+
+  toggle: {
+    padding: 16,
+    alignItems: "center",
+  },
+
+  menu: {
+    padding: 20,
+    gap: 20,
   },
 
 });
